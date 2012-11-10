@@ -1,0 +1,31 @@
+let
+
+fun reverse(l:intlist):intlist =
+  let fun aux(args: (intlist * intlist)):intlist =
+    (case args of
+      (Nil, r) => r
+    | (l',result) => (case l' of Cons(h,t) => aux(t,Cons(h,result))))
+  in aux(l,Nil)
+  end
+
+fun fold (args:( ((int * intlist) -> intlist) * intlist * intlist)):intlist = 
+  (case args of
+	(f,acc,l) => (case l of
+			  Nil => acc	    
+			| Cons(h,t) => fold(f,f(h,acc),t)))
+
+val l = Cons(1,Cons(2,Cons(3,Nil)))
+val l' = Cons(1,Cons(0,Cons(2,Cons(3,Nil))))
+
+fun mapfold (args: ( (int -> int) * intlist)):intlist =
+   (case args of
+      (f,l) => fold( (fn(args:(int*intlist)) => (case args of
+                                                  (elt,acc) => Cons(f(elt),acc))),
+                      Nil,
+                      l))
+
+val z' = (reverse(mapfold(fn (x:int) => x + 1,l)),
+          reverse(mapfold(fn (y:int) => if y = 0 then 0 else 1,l')))
+
+in z' end
+

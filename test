@@ -1,0 +1,1 @@
+let val f = (let val i=2 in (fn (x:int) => x+i) end) in f 1 end

@@ -1,0 +1,33 @@
+Group is
+
+$/smlnj-lib.cm
+$/ml-yacc-lib.cm
+$/basis.cm
+$/pp-lib.cm
+
+ Util/error.sml
+ Util/string-set.sml
+ Util/string-map.sml
+ Util/pp.sml
+
+ (* parser *)
+ Parser/mini-ml.lex.sml
+ Parser/mini-ml.grm.sig
+ Parser/mini-ml.grm.sml
+ Parser/parser.sml
+
+ (* abstract syntax *)
+ AbSyn/absyn.sml
+ AbSyn/datatypes.sml
+
+ (* prettyprinting *)
+ Util/prettyprinter.sml
+
+ (* type-checking *)
+ TypChk/type-context.sml
+ TypChk/type-check.sml
+ TypChk/tpprint.sml
+
+(* the interpreter *)
+interp.sml 
+

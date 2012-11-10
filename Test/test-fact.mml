@@ -1,0 +1,24 @@
+
+fun fact(a: (int * int ref)):int = 
+ (case a of 
+   (0,x) => !x 
+ | (n,x) => let val _ = x := (n * !x) 
+            in fact(n-1,x) 
+             end)
+
+ val n = ref 1 
+ val z = fact(5,n) 
+
+
+fun fact1(a: (int * (int -> int))):int = 
+  (case a of
+    (0,k) => k 1
+  | (n,k) => let val k' = fn (z:int) => fact1 (z, fn (v:int) => k (n * v))
+             in k' (n - 1)
+             end)
+
+val z = fact1(5, fn (x:int) => x)
+
+val foo = let fun fact (n:int): int = if n<1 then 1 else n * fact (n-1)
+          in fact(4)
+          end 

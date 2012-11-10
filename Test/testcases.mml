@@ -1,0 +1,73 @@
+(* TESTCASES *)
+
+(* 1 record *)
+val x = {b=2,a=1}  (* (1,2) *)
+val x = let val x={b=2,a=1} in #b x end (* 2 *)
+val x = let val r={bb=3,ab=2} in 7*(#ab r) + (#bb r) end  (* 17 *)
+
+(* 2 Var *) (* use others *)
+
+(* 3 pat and case *)
+
+val x = let val c  = case Cons(1,Nil) of Cons(y,L) => L in c end (* (Nil) *)
+val x = let val c1 = case NONE of NONE => 1 | SOME x => x in c1 end (* 1 *)
+val x = let val c2 = case SOME 2 of NONE => 1 | SOME x => x in c2 end (* 2 *)
+val x = let val c3 = case (2,4) of (3,4) => 7 | (a,4) => a - 1 | (b,c) => b -c in c3 end (*  1  *)
+val x = let val c4 = case (2,4) of (3,4) => 7 | (a,4) => a - 1 | (b,_) => b  in c4 end  (*  1  *)
+val x = let val (a,b)=(5,4) in a*b + b end (* 24 *)
+val x = let val z={b=5,a=4} val {a=x,b=y}=z in x*y + y end (* 25 *)
+val x = let val x = 2 
+            val y = x + 2 
+        in x + y 
+        end (* 6 *)
+
+(* 4 Ref *)
+val _ = let val x = ref 0 
+            val _ = x := 2 
+         in !x 
+end (* 2 *)
+
+(* 5 Constructors Int_c, Real_c, String_c, Char_c *)  (* use other *)
+val x  = let val i = 1 + 2 in i end
+val x  = let val r = 1.1 + 2.2 in r end
+val x  = let val s = "your"^" name" in s end
+
+(* 6 datatypes *)
+val x = let val a = NONE 
+            val b= SOME 2 
+            val c = Nil 
+            val d = true 
+            val e = false 
+            val f = Cons(2,Cons(1,Nil)) 
+        in f end
+ (* Cons( 2, Cons (1, (Nil))) *)
+
+(* 7 recursive *) (* recursive *) (* letrec *)
+val _ = let fun f(x:int):int = if x=1 then 1 else f(x-1) in f(4) end (* 1 *)
+val _ = let fun f(x:int):int = if x=1 then 1 else x*f(x-1) in f(4) end (* 24 *)
+
+(* let *)
+val _ = let val x = 1 in (2, x) end (* (2,1) *)
+val _ = let val x = "aa" in (2, x) end (* (2,aa) *)
+val _ = let val x = (2,3) in (#1 x) + 7*(#2 x) end (* 23 *)
+val _ = let fun f(x:int):int = x+1 fun g(x:int):int = f(f x) in g 1 end (* 3 *)
+
+
+
+(* order of evaluation *)
+val x  = let val r = ref 0 val f = fn(a:(int * int )) => a val z = (r:=1,r:=2) in f(!r,!r) end (* (2,2) *)
+val x  = let val r = ref 0 val f = fn(a:(int * int )) => a val z = (r:=2,r:=1) in f(!r,!r) end (* (1,1) *)
+
+
+(* misc *)
+val x = let val r1 = 1 + 2  
+            val r2 = 1 - 2  
+            val r3 = 1 * 3 
+            val r4 = 2 = 2 
+            val r5 = "11"^"b" 
+            val r6 = 1 > 2  
+            val r7 = 1 < 2  
+            val r8 = 1 >= 2 
+            val r9 = 1 <= 2 
+        in ()
+        end

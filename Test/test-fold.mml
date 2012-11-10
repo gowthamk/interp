@@ -1,0 +1,13 @@
+let
+
+fun fold (args:( ((int * int) -> int) * int * intlist)):int = 
+  (case args of
+	(f,acc,l) => (case l of
+			  Nil => acc	    
+			| Cons(h,t) => fold(f,f(h,acc),t)))
+
+val l = Cons(1,Cons(2,Cons(3,Nil)))
+
+val z' = fold(fn (args: (int * int)) => (case args of (x,acc) => x + acc),0,l)
+
+in z' end

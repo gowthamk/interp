@@ -1,0 +1,20 @@
+fun map (f:int->int):intlist->intlist =
+  (fn (l:intlist) =>
+     case l of
+      Nil => Nil
+    | Cons (x,xs) => Cons (f(x), (map f) xs))
+
+
+fun iotaHelper(x: (int * intlist)):intlist =
+  (case x of
+     (0,l) => l
+   | (n,l) => iotaHelper(n-1,Cons(n,l)))
+
+fun iota(n:int):intlist = 
+  iotaHelper(n,Nil)
+
+val l = iota(3)
+
+val m = map (fn (x:int) => x + 1) l
+
+

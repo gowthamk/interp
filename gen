@@ -1,0 +1,8 @@
+ fun bst Empty = true 
+   | bst (Node(l,(k,_),r)) = let
+               val rec bst' t n1 n2 = fn t => 
+                                       case t of Empty => true 
+                                         | (Node(lt,(k,_),rt)) => (n1<=k and k<=n2) andalso bst'(lt,n1,k) andalso bst'(rt,k,n2)
+               in
+                  bst'()
+

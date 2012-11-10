@@ -1,0 +1,36 @@
+let
+fun split(l: intlist): (intlist * intlist) = 
+   (case l of 
+      Nil => (Nil,Nil)
+    | Cons(a,Nil) => (Cons(a,Nil),Nil)
+    | Cons(a,Cons(b,r)) => let val (M,N) = split(r)
+                           in (Cons(a,M),Cons(b,N))
+                           end)
+
+fun merge(l: (intlist * intlist)):intlist = 
+  (case l of
+    (Nil,M) => M
+  | (M,Nil) => M
+  | (Cons(x,xs),Cons(y,ys)) =>
+       if x < y 
+	  then Cons(x,merge(xs,Cons(y,ys)))
+          else Cons(y,merge(Cons(x,xs),ys)))
+
+
+fun mergesort(l:intlist):intlist = 
+  (case l of
+    Nil => Nil
+  | Cons(a,Nil) => Cons(a,Nil)
+  | Cons(a,b) => let val (M,N) = split(l)
+                     val M = mergesort(M)
+                     val N = mergesort(N)
+                 in merge(M,N)
+                 end)
+
+val z' = Cons(8,Cons(4,Cons(3,Cons(6,Cons(2,Nil)))))
+in
+mergesort(z')
+end
+
+
+

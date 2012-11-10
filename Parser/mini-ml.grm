@@ -1,0 +1,253 @@
+
+open AbSyn
+
+val c = Unsafe.cast (0)
+
+%%
+%header (functor MiniMLLrValsFun (structure Token : TOKEN) : MiniML_LRVALS)
+
+%name MiniML
+
+%eop EOF
+
+(* %pos declares the type of positions for terminals.
+ * (actually, the line number)
+ * Each symbol has an associated left and right position.
+ *)
+
+%pos int
+
+%nonassoc BANG
+%left EQSIGN LESS GREATER LESSEQ GREATEREQ
+%left PLUS MINUS CARET
+%left TIMES
+%right ASSGN
+%right ARROW
+
+%nonassoc DARROW
+%nonassoc KW_ref
+%nonassoc BAR
+
+
+%term KW_int
+    | KW_real
+    | KW_string
+    | KW_char
+    | KW_fn
+    | KW_case
+    | KW_of
+    | KW_let
+    | KW_in
+    | KW_end
+    | KW_val
+    | KW_fun
+    | KW_ref
+    | KW_not
+    | KW_if
+    | KW_then
+    | KW_else
+    | KW_unit
+    | KW_error
+
+    | ID of string
+    | DATACON of string
+    | DATACONARG of string
+    | LBRACE
+    | RBRACE
+    | INT of int
+    | REAL of real
+    | CHAR of char
+    | HASH
+    | UNDERSCORE
+    | COMMA
+    | COLON
+    | LPAREN
+    | RPAREN
+    | BAR
+    | TIMES
+    | PLUS
+    | MINUS
+    | ARROW
+    | DARROW
+    | CARET
+    | EQSIGN
+    | BANG
+    | ASSGN
+    | STRING of string
+    | LESS
+    | LESSEQ
+    | GREATER
+    | GREATEREQ
+    | NEG
+    | SEMICOLON
+    | EOF
+
+%nonterm  Start of top_level option
+        | OptSemi
+        | Type of typ
+        | TypeList of typ list
+        | TypeList' of typ list
+        | TypeFieldList of (string * typ) list
+        | TypeFieldList' of (string * typ) list
+        | Constant of const
+        | Binops of exp
+        | Unops of exp
+(*        | DataCons of exp *)
+        | AtomicExp of exp
+        | Tuple of exp
+        | Exp of exp
+        | ExpComma_seq1 of exp list
+        | ExpComma_seq2 of exp list
+        | FieldList of (string * exp) list
+        | FieldList' of (string * exp) list
+        | PMatch of (pat * exp) list
+        | PMRule of (pat * exp)
+        | Decl of decl
+        | DeclList of decl list
+        | Pat of pat
+        | PatList of pat list
+        | PatList' of pat list
+        | PatFieldList of (string * pat) list
+        | PatFieldList' of (string * pat) list
+        | InfixExp of exp
+        | AtExp of exp
+        | AtExp_seq1 of exp
+
+%pure
+%noshift EOF
+%verbose
+
+
+%%
+
+
+Start : Exp OptSemi (SOME (Exp_t (Exp)))
+      | DeclList OptSemi (SOME (Decl_t (DeclList)))
+
+
+OptSemi : SEMICOLON () | ()
+
+
+Type :
+       KW_int (Int_t)
+     | KW_real (Real_t)
+     | KW_string (String_t)
+     | KW_char (Char_t)
+     | KW_unit (Tuple_t [])
+     | Type KW_ref (Ref_t (Type))
+     | ID (Id_t (ID))
+     | Type ARROW Type (Fn_t (Type1,Type2))
+     | LPAREN Type TIMES TypeList RPAREN (Tuple_t(Type::TypeList))
+     | LBRACE TypeFieldList RBRACE (Record_t (TypeFieldList))
+     | LPAREN Type RPAREN (Type)
+
+TypeList : Type TIMES TypeList (Type::TypeList)
+         | Type ([Type])
+
+TypeFieldList : ID COLON Type TypeFieldList' ((ID,Type)::TypeFieldList')
+
+TypeFieldList' : COMMA ID COLON Type TypeFieldList' ((ID,Type)::TypeFieldList')
+               |   ([])
+
+Constant : INT (Int_c (INT))
+         | REAL (Real_c (REAL))
+         | STRING (String_c (STRING))
+         | CHAR (Char_c (CHAR))
+
+Binops: InfixExp PLUS InfixExp (Binop_e(InfixExp1, Plus, InfixExp2))
+      | InfixExp MINUS InfixExp (Binop_e(InfixExp1, Minus, InfixExp2))
+      | InfixExp TIMES InfixExp (Binop_e(InfixExp1, Times, InfixExp2))
+      | InfixExp EQSIGN InfixExp (Binop_e(InfixExp1, Equal, InfixExp2))
+      | InfixExp CARET InfixExp (Binop_e(InfixExp1, Concat, InfixExp2))
+      | InfixExp LESS InfixExp (Binop_e(InfixExp1, LessThan, InfixExp2))
+      | InfixExp LESSEQ InfixExp (Binop_e(InfixExp1,
+                                 LessThanEq, InfixExp2))
+      | InfixExp GREATER InfixExp (Binop_e(InfixExp1,
+                                  GreaterThan, InfixExp2))
+      | InfixExp GREATEREQ InfixExp (Binop_e(InfixExp1,
+                                    GreaterThanEq, InfixExp2))
+      | InfixExp ASSGN InfixExp (Assign_e (InfixExp1,InfixExp2))
+
+Unops: KW_not AtExp (Unop_e(Not, AtExp))
+     | NEG AtExp (Unop_e(Neg, AtExp))
+     | KW_ref AtExp (Ref_e (AtExp))
+     | KW_error AtExp (Error_e (AtExp))
+     | BANG AtExp (Deref_e (AtExp))
+
+AtomicExp: ID (Id_e(ID))
+         | Constant (Const_e(Constant))
+
+AtExp : AtomicExp (AtomicExp)
+      | KW_let DeclList KW_in Exp KW_end (Let_e (DeclList,Exp))
+      | LPAREN Exp RPAREN (Exp)
+      | LPAREN RPAREN (Tuple_e [])
+      | LPAREN ExpComma_seq2 RPAREN (Tuple_e (ExpComma_seq2))
+      | LBRACE FieldList RBRACE (Record_e (FieldList))
+      | DATACON (DataCon_e (DATACON, NONE))
+      | Unops (Unops)
+
+
+AtExp_seq1 : AtExp_seq1 AtExp    (App_e (AtExp_seq1,AtExp))
+           | AtExp  (AtExp)
+
+InfixExp : AtExp_seq1 (AtExp_seq1)
+         | Binops (Binops)
+
+
+Exp : InfixExp (InfixExp)
+    | HASH INT Exp (Ith_e (INT,Exp))
+    | HASH ID Exp (Field_e (ID,Exp,ref (NONE)))
+    | KW_if Exp KW_then Exp KW_else Exp
+         ( If_e (Exp1,Exp2,Exp3))
+    | KW_case Exp KW_of PMatch (Case_e (Exp,PMatch))
+    | KW_fn LPAREN ID COLON Type RPAREN DARROW Exp (Fn_e (ID,Type,Exp))
+    | KW_fn LPAREN RPAREN DARROW Exp (Fn_e ("()",Tuple_t [],Exp))
+    | DATACONARG Exp (DataCon_e (DATACONARG, SOME (Exp)))
+
+
+ExpComma_seq1 :
+    Exp COMMA ExpComma_seq1     (Exp::ExpComma_seq1)
+  | Exp                         ([Exp])
+
+ExpComma_seq2 :
+    Exp COMMA ExpComma_seq1     (Exp::ExpComma_seq1)
+
+
+FieldList : ID EQSIGN Exp FieldList' ((ID,Exp)::FieldList')
+
+FieldList' : COMMA ID EQSIGN Exp FieldList' ((ID,Exp)::FieldList')
+           |   ([])
+
+PMatch :
+    PMRule BAR PMatch             ((PMRule::PMatch))
+  | PMRule       %prec DARROW   ([PMRule])
+
+PMRule :
+    Pat DARROW Exp      ((Pat,Exp))
+
+Decl : KW_val Pat EQSIGN Exp  (Val_d (Pat,Exp))
+     | KW_fun ID LPAREN ID COLON Type RPAREN COLON Type EQSIGN Exp
+          (Fun_d (({name=ID1,ret_typ=Type2,arg=ID2,arg_typ=Type1},Exp)))
+     | KW_fun ID LPAREN RPAREN COLON Type EQSIGN Exp
+          (Fun_d (({name=ID,ret_typ=Type,arg="",arg_typ=Tuple_t []},Exp)))
+
+DeclList : Decl DeclList (Decl::DeclList)
+    | ([])
+
+Pat : UNDERSCORE (Wild_p)
+    | ID (Id_p (ID))
+    | INT (Const_p (INT))
+    | DATACONARG Pat (DataCon_p (DATACONARG,SOME (Pat)))
+    | DATACON (DataCon_p (DATACON,NONE))
+    | LPAREN PatList RPAREN (case PatList of [p] => p | _ => Tuple_p (PatList))
+    | LBRACE PatFieldList RBRACE (Record_p (PatFieldList))
+
+PatList : Pat PatList'  (Pat::PatList')
+
+PatList' : COMMA Pat PatList'  (Pat::PatList')
+         |   ([])
+
+PatFieldList : ID EQSIGN Pat PatFieldList' ((ID,Pat)::PatFieldList')
+
+PatFieldList' : COMMA ID EQSIGN Pat PatFieldList' ((ID,Pat)::PatFieldList')
+              |    ([])

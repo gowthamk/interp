@@ -1,0 +1,17 @@
+let fun append(args: (intlist * intlist)):intlist =
+   (case args of
+       (Nil,a) => a
+     | (a,Nil) => a
+     | (a,b) => (case a of
+                   Cons(h,t) => Cons(h, append(t,b))))
+
+
+    fun dohanoi(args: (int * int * int * int)): intlist =
+       (case args of
+	   (n, to, from, using) => if n = 0 
+				      then Nil
+				   else append(dohanoi(n-1, using, from, to),
+					       append(Cons(from,Cons(to,Nil)),
+						      dohanoi(n-1,to,using,from))))
+in dohanoi(3, 3, 1, 2)
+end

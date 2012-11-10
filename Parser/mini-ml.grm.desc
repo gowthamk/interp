@@ -1,0 +1,3036 @@
+
+state 0:
+
+	Start : . Exp OptSemi 
+	Start : . DeclList OptSemi 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_val	shift 28
+	KW_fun	shift 27
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Start	goto 190
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 6
+	Decl	goto 5
+	DeclList	goto 4
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	reduce by rule 74
+
+
+state 1:
+
+	InfixExp : AtExp_seq1 .  (reduce by rule 51)
+	AtExp_seq1 : AtExp_seq1 . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 32
+
+	.	reduce by rule 51
+
+
+state 2:
+
+	AtExp_seq1 : AtExp .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 3:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+	Exp : InfixExp .  (reduce by rule 53)
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	EQSIGN	shift 38
+	ASSGN	shift 37
+	LESS	shift 36
+	LESSEQ	shift 35
+	GREATER	shift 34
+	GREATEREQ	shift 33
+
+
+	.	reduce by rule 53
+
+
+state 4:
+
+	Start : DeclList . OptSemi 
+
+	SEMICOLON	shift 44
+
+	OptSemi	goto 43
+
+	.	reduce by rule 3
+
+
+state 5:
+
+	DeclList : Decl . DeclList 
+
+	KW_val	shift 28
+	KW_fun	shift 27
+
+	Decl	goto 5
+	DeclList	goto 45
+
+	.	reduce by rule 74
+
+
+state 6:
+
+	Start : Exp . OptSemi 
+
+	SEMICOLON	shift 44
+
+	OptSemi	goto 46
+
+	.	reduce by rule 3
+
+
+state 7:
+
+	AtExp : AtomicExp .  (reduce by rule 41)
+
+
+
+	.	reduce by rule 41
+
+
+state 8:
+
+	AtExp : Unops .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 9:
+
+	InfixExp : Binops .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 10:
+
+	AtomicExp : Constant .  (reduce by rule 40)
+
+
+
+	.	reduce by rule 40
+
+
+state 11:
+
+	Unops : NEG . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 47
+
+	.	error
+
+
+state 12:
+
+	Constant : STRING .  (reduce by rule 22)
+
+
+
+	.	reduce by rule 22
+
+
+state 13:
+
+	Unops : BANG . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 48
+
+	.	error
+
+
+state 14:
+
+	AtExp : LPAREN . Exp RPAREN 
+	AtExp : LPAREN . RPAREN 
+	AtExp : LPAREN . ExpComma_seq2 RPAREN 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	RPAREN	shift 51
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 50
+	ExpComma_seq2	goto 49
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 15:
+
+	Exp : HASH . INT Exp 
+	Exp : HASH . ID Exp 
+
+	ID	shift 53
+	INT	shift 52
+
+
+	.	error
+
+
+state 16:
+
+	Constant : CHAR .  (reduce by rule 23)
+
+
+
+	.	reduce by rule 23
+
+
+state 17:
+
+	Constant : REAL .  (reduce by rule 21)
+
+
+
+	.	reduce by rule 21
+
+
+state 18:
+
+	Constant : INT .  (reduce by rule 20)
+
+
+
+	.	reduce by rule 20
+
+
+state 19:
+
+	AtExp : LBRACE . FieldList RBRACE 
+
+	ID	shift 55
+
+	FieldList	goto 54
+
+	.	error
+
+
+state 20:
+
+	Exp : DATACONARG . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 56
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 21:
+
+	AtExp : DATACON .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 22:
+
+	AtomicExp : ID .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 23:
+
+	Unops : KW_error . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 57
+
+	.	error
+
+
+state 24:
+
+	Exp : KW_if . Exp KW_then Exp KW_else Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 58
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 25:
+
+	Unops : KW_not . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 59
+
+	.	error
+
+
+state 26:
+
+	Unops : KW_ref . AtExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Unops	goto 8
+	AtomicExp	goto 7
+	AtExp	goto 60
+
+	.	error
+
+
+state 27:
+
+	Decl : KW_fun . ID LPAREN ID COLON Type RPAREN COLON Type EQSIGN Exp 
+	Decl : KW_fun . ID LPAREN RPAREN COLON Type EQSIGN Exp 
+
+	ID	shift 61
+
+
+	.	error
+
+
+state 28:
+
+	Decl : KW_val . Pat EQSIGN Exp 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 62
+
+	.	error
+
+
+state 29:
+
+	AtExp : KW_let . DeclList KW_in Exp KW_end 
+
+	KW_val	shift 28
+	KW_fun	shift 27
+
+	Decl	goto 5
+	DeclList	goto 70
+
+	.	reduce by rule 74
+
+
+state 30:
+
+	Exp : KW_case . Exp KW_of PMatch 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 71
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 31:
+
+	Exp : KW_fn . LPAREN ID COLON Type RPAREN DARROW Exp 
+	Exp : KW_fn . LPAREN RPAREN DARROW Exp 
+
+	LPAREN	shift 72
+
+
+	.	error
+
+
+state 32:
+
+	AtExp_seq1 : AtExp_seq1 AtExp .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 33:
+
+	Binops : InfixExp GREATEREQ . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 73
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 34:
+
+	Binops : InfixExp GREATER . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 74
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 35:
+
+	Binops : InfixExp LESSEQ . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 75
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 36:
+
+	Binops : InfixExp LESS . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 76
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 37:
+
+	Binops : InfixExp ASSGN . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 77
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 38:
+
+	Binops : InfixExp EQSIGN . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 78
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 39:
+
+	Binops : InfixExp CARET . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 79
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 40:
+
+	Binops : InfixExp MINUS . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 80
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 41:
+
+	Binops : InfixExp PLUS . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 81
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 42:
+
+	Binops : InfixExp TIMES . InfixExp 
+
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	InfixExp	goto 82
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 43:
+
+	Start : DeclList OptSemi .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 44:
+
+	OptSemi : SEMICOLON .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 45:
+
+	DeclList : Decl DeclList .  (reduce by rule 73)
+
+
+
+	.	reduce by rule 73
+
+
+state 46:
+
+	Start : Exp OptSemi .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 47:
+
+	Unops : NEG AtExp .  (reduce by rule 35)
+
+
+
+	.	reduce by rule 35
+
+
+state 48:
+
+	Unops : BANG AtExp .  (reduce by rule 38)
+
+
+
+	.	reduce by rule 38
+
+
+state 49:
+
+	AtExp : LPAREN ExpComma_seq2 . RPAREN 
+
+	RPAREN	shift 83
+
+
+	.	error
+
+
+state 50:
+
+	ExpComma_seq2 : Exp . COMMA ExpComma_seq1 
+	AtExp : LPAREN Exp . RPAREN 
+
+	COMMA	shift 85
+	RPAREN	shift 84
+
+
+	.	error
+
+
+state 51:
+
+	AtExp : LPAREN RPAREN .  (reduce by rule 44)
+
+
+
+	.	reduce by rule 44
+
+
+state 52:
+
+	Exp : HASH INT . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 86
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 53:
+
+	Exp : HASH ID . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 87
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 54:
+
+	AtExp : LBRACE FieldList . RBRACE 
+
+	RBRACE	shift 88
+
+
+	.	error
+
+
+state 55:
+
+	FieldList : ID . EQSIGN Exp FieldList' 
+
+	EQSIGN	shift 89
+
+
+	.	error
+
+
+state 56:
+
+	Exp : DATACONARG Exp .  (reduce by rule 60)
+
+
+
+	.	reduce by rule 60
+
+
+state 57:
+
+	Unops : KW_error AtExp .  (reduce by rule 37)
+
+
+
+	.	reduce by rule 37
+
+
+state 58:
+
+	Exp : KW_if Exp . KW_then Exp KW_else Exp 
+
+	KW_then	shift 90
+
+
+	.	error
+
+
+state 59:
+
+	Unops : KW_not AtExp .  (reduce by rule 34)
+
+
+
+	.	reduce by rule 34
+
+
+state 60:
+
+	Unops : KW_ref AtExp .  (reduce by rule 36)
+
+
+
+	.	reduce by rule 36
+
+
+state 61:
+
+	Decl : KW_fun ID . LPAREN ID COLON Type RPAREN COLON Type EQSIGN Exp 
+	Decl : KW_fun ID . LPAREN RPAREN COLON Type EQSIGN Exp 
+
+	LPAREN	shift 91
+
+
+	.	error
+
+
+state 62:
+
+	Decl : KW_val Pat . EQSIGN Exp 
+
+	EQSIGN	shift 92
+
+
+	.	error
+
+
+state 63:
+
+	Pat : LPAREN . PatList RPAREN 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 94
+	PatList	goto 93
+
+	.	error
+
+
+state 64:
+
+	Pat : UNDERSCORE .  (reduce by rule 75)
+
+
+
+	.	reduce by rule 75
+
+
+state 65:
+
+	Pat : INT .  (reduce by rule 77)
+
+
+
+	.	reduce by rule 77
+
+
+state 66:
+
+	Pat : LBRACE . PatFieldList RBRACE 
+
+	ID	shift 96
+
+	PatFieldList	goto 95
+
+	.	error
+
+
+state 67:
+
+	Pat : DATACONARG . Pat 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 97
+
+	.	error
+
+
+state 68:
+
+	Pat : DATACON .  (reduce by rule 79)
+
+
+
+	.	reduce by rule 79
+
+
+state 69:
+
+	Pat : ID .  (reduce by rule 76)
+
+
+
+	.	reduce by rule 76
+
+
+state 70:
+
+	AtExp : KW_let DeclList . KW_in Exp KW_end 
+
+	KW_in	shift 98
+
+
+	.	error
+
+
+state 71:
+
+	Exp : KW_case Exp . KW_of PMatch 
+
+	KW_of	shift 99
+
+
+	.	error
+
+
+state 72:
+
+	Exp : KW_fn LPAREN . ID COLON Type RPAREN DARROW Exp 
+	Exp : KW_fn LPAREN . RPAREN DARROW Exp 
+
+	ID	shift 101
+	RPAREN	shift 100
+
+
+	.	error
+
+
+state 73:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp GREATEREQ InfixExp .  (reduce by rule 32)
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	ASSGN	shift 37
+
+
+	.	reduce by rule 32
+
+
+state 74:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp GREATER InfixExp .  (reduce by rule 31)
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	ASSGN	shift 37
+
+
+	.	reduce by rule 31
+
+
+state 75:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp LESSEQ InfixExp .  (reduce by rule 30)
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	ASSGN	shift 37
+
+
+	.	reduce by rule 30
+
+
+state 76:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp LESS InfixExp .  (reduce by rule 29)
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	ASSGN	shift 37
+
+
+	.	reduce by rule 29
+
+
+state 77:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+	Binops : InfixExp ASSGN InfixExp .  (reduce by rule 33)
+
+	ASSGN	shift 37
+
+
+	.	reduce by rule 33
+
+
+state 78:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp EQSIGN InfixExp .  (reduce by rule 27)
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	PLUS	shift 41
+	MINUS	shift 40
+	CARET	shift 39
+	ASSGN	shift 37
+
+
+	.	reduce by rule 27
+
+
+state 79:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp CARET InfixExp .  (reduce by rule 28)
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	ASSGN	shift 37
+
+
+	.	reduce by rule 28
+
+
+state 80:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp MINUS InfixExp .  (reduce by rule 25)
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	ASSGN	shift 37
+
+
+	.	reduce by rule 25
+
+
+state 81:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp PLUS InfixExp .  (reduce by rule 24)
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	TIMES	shift 42
+	ASSGN	shift 37
+
+
+	.	reduce by rule 24
+
+
+state 82:
+
+	Binops : InfixExp . PLUS InfixExp 
+	Binops : InfixExp . MINUS InfixExp 
+	Binops : InfixExp . TIMES InfixExp 
+	Binops : InfixExp TIMES InfixExp .  (reduce by rule 26)
+	Binops : InfixExp . EQSIGN InfixExp 
+	Binops : InfixExp . CARET InfixExp 
+	Binops : InfixExp . LESS InfixExp 
+	Binops : InfixExp . LESSEQ InfixExp 
+	Binops : InfixExp . GREATER InfixExp 
+	Binops : InfixExp . GREATEREQ InfixExp 
+	Binops : InfixExp . ASSGN InfixExp 
+
+	ASSGN	shift 37
+
+
+	.	reduce by rule 26
+
+
+state 83:
+
+	AtExp : LPAREN ExpComma_seq2 RPAREN .  (reduce by rule 45)
+
+
+
+	.	reduce by rule 45
+
+
+state 84:
+
+	AtExp : LPAREN Exp RPAREN .  (reduce by rule 43)
+
+
+
+	.	reduce by rule 43
+
+
+state 85:
+
+	ExpComma_seq2 : Exp COMMA . ExpComma_seq1 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 103
+	ExpComma_seq1	goto 102
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 86:
+
+	Exp : HASH INT Exp .  (reduce by rule 54)
+
+
+
+	.	reduce by rule 54
+
+
+state 87:
+
+	Exp : HASH ID Exp .  (reduce by rule 55)
+
+
+
+	.	reduce by rule 55
+
+
+state 88:
+
+	AtExp : LBRACE FieldList RBRACE .  (reduce by rule 46)
+
+
+
+	.	reduce by rule 46
+
+
+state 89:
+
+	FieldList : ID EQSIGN . Exp FieldList' 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 104
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 90:
+
+	Exp : KW_if Exp KW_then . Exp KW_else Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 105
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 91:
+
+	Decl : KW_fun ID LPAREN . ID COLON Type RPAREN COLON Type EQSIGN Exp 
+	Decl : KW_fun ID LPAREN . RPAREN COLON Type EQSIGN Exp 
+
+	ID	shift 107
+	RPAREN	shift 106
+
+
+	.	error
+
+
+state 92:
+
+	Decl : KW_val Pat EQSIGN . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 108
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 93:
+
+	Pat : LPAREN PatList . RPAREN 
+
+	RPAREN	shift 109
+
+
+	.	error
+
+
+state 94:
+
+	PatList : Pat . PatList' 
+
+	COMMA	shift 111
+
+	PatList'	goto 110
+
+	.	reduce by rule 84
+
+
+state 95:
+
+	Pat : LBRACE PatFieldList . RBRACE 
+
+	RBRACE	shift 112
+
+
+	.	error
+
+
+state 96:
+
+	PatFieldList : ID . EQSIGN Pat PatFieldList' 
+
+	EQSIGN	shift 113
+
+
+	.	error
+
+
+state 97:
+
+	Pat : DATACONARG Pat .  (reduce by rule 78)
+
+
+
+	.	reduce by rule 78
+
+
+state 98:
+
+	AtExp : KW_let DeclList KW_in . Exp KW_end 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 114
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 99:
+
+	Exp : KW_case Exp KW_of . PMatch 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	PMatch	goto 117
+	PMRule	goto 116
+	Pat	goto 115
+
+	.	error
+
+
+state 100:
+
+	Exp : KW_fn LPAREN RPAREN . DARROW Exp 
+
+	DARROW	shift 118
+
+
+	.	error
+
+
+state 101:
+
+	Exp : KW_fn LPAREN ID . COLON Type RPAREN DARROW Exp 
+
+	COLON	shift 119
+
+
+	.	error
+
+
+state 102:
+
+	ExpComma_seq2 : Exp COMMA ExpComma_seq1 .  (reduce by rule 63)
+
+
+
+	.	reduce by rule 63
+
+
+state 103:
+
+	ExpComma_seq1 : Exp . COMMA ExpComma_seq1 
+	ExpComma_seq1 : Exp .  (reduce by rule 62)
+
+	COMMA	shift 120
+
+
+	.	reduce by rule 62
+
+
+state 104:
+
+	FieldList : ID EQSIGN Exp . FieldList' 
+
+	COMMA	shift 122
+
+	FieldList'	goto 121
+
+	.	reduce by rule 66
+
+
+state 105:
+
+	Exp : KW_if Exp KW_then Exp . KW_else Exp 
+
+	KW_else	shift 123
+
+
+	.	error
+
+
+state 106:
+
+	Decl : KW_fun ID LPAREN RPAREN . COLON Type EQSIGN Exp 
+
+	COLON	shift 124
+
+
+	.	error
+
+
+state 107:
+
+	Decl : KW_fun ID LPAREN ID . COLON Type RPAREN COLON Type EQSIGN Exp 
+
+	COLON	shift 125
+
+
+	.	error
+
+
+state 108:
+
+	Decl : KW_val Pat EQSIGN Exp .  (reduce by rule 70)
+
+
+
+	.	reduce by rule 70
+
+
+state 109:
+
+	Pat : LPAREN PatList RPAREN .  (reduce by rule 80)
+
+
+
+	.	reduce by rule 80
+
+
+state 110:
+
+	PatList : Pat PatList' .  (reduce by rule 82)
+
+
+
+	.	reduce by rule 82
+
+
+state 111:
+
+	PatList' : COMMA . Pat PatList' 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 126
+
+	.	error
+
+
+state 112:
+
+	Pat : LBRACE PatFieldList RBRACE .  (reduce by rule 81)
+
+
+
+	.	reduce by rule 81
+
+
+state 113:
+
+	PatFieldList : ID EQSIGN . Pat PatFieldList' 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 127
+
+	.	error
+
+
+state 114:
+
+	AtExp : KW_let DeclList KW_in Exp . KW_end 
+
+	KW_end	shift 128
+
+
+	.	error
+
+
+state 115:
+
+	PMRule : Pat . DARROW Exp 
+
+	DARROW	shift 129
+
+
+	.	error
+
+
+state 116:
+
+	PMatch : PMRule . BAR PMatch 
+	PMatch : PMRule .  (reduce by rule 68)
+
+	BAR	shift 130
+
+
+	.	reduce by rule 68
+
+
+state 117:
+
+	Exp : KW_case Exp KW_of PMatch .  (reduce by rule 57)
+
+
+
+	.	reduce by rule 57
+
+
+state 118:
+
+	Exp : KW_fn LPAREN RPAREN DARROW . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 131
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 119:
+
+	Exp : KW_fn LPAREN ID COLON . Type RPAREN DARROW Exp 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 132
+
+	.	error
+
+
+state 120:
+
+	ExpComma_seq1 : Exp COMMA . ExpComma_seq1 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 103
+	ExpComma_seq1	goto 141
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 121:
+
+	FieldList : ID EQSIGN Exp FieldList' .  (reduce by rule 64)
+
+
+
+	.	reduce by rule 64
+
+
+state 122:
+
+	FieldList' : COMMA . ID EQSIGN Exp FieldList' 
+
+	ID	shift 142
+
+
+	.	error
+
+
+state 123:
+
+	Exp : KW_if Exp KW_then Exp KW_else . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 143
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 124:
+
+	Decl : KW_fun ID LPAREN RPAREN COLON . Type EQSIGN Exp 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 144
+
+	.	error
+
+
+state 125:
+
+	Decl : KW_fun ID LPAREN ID COLON . Type RPAREN COLON Type EQSIGN Exp 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 145
+
+	.	error
+
+
+state 126:
+
+	PatList' : COMMA Pat . PatList' 
+
+	COMMA	shift 111
+
+	PatList'	goto 146
+
+	.	reduce by rule 84
+
+
+state 127:
+
+	PatFieldList : ID EQSIGN Pat . PatFieldList' 
+
+	COMMA	shift 148
+
+	PatFieldList'	goto 147
+
+	.	reduce by rule 87
+
+
+state 128:
+
+	AtExp : KW_let DeclList KW_in Exp KW_end .  (reduce by rule 42)
+
+
+
+	.	reduce by rule 42
+
+
+state 129:
+
+	PMRule : Pat DARROW . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 149
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 130:
+
+	PMatch : PMRule BAR . PMatch 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	PMatch	goto 150
+	PMRule	goto 116
+	Pat	goto 115
+
+	.	error
+
+
+state 131:
+
+	Exp : KW_fn LPAREN RPAREN DARROW Exp .  (reduce by rule 59)
+
+
+
+	.	reduce by rule 59
+
+
+state 132:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Exp : KW_fn LPAREN ID COLON Type . RPAREN DARROW Exp 
+
+	KW_ref	shift 153
+	RPAREN	shift 152
+	ARROW	shift 151
+
+
+	.	error
+
+
+state 133:
+
+	Type : LPAREN . Type TIMES TypeList RPAREN 
+	Type : LPAREN . Type RPAREN 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 154
+
+	.	error
+
+
+state 134:
+
+	Type : LBRACE . TypeFieldList RBRACE 
+
+	ID	shift 156
+
+	TypeFieldList	goto 155
+
+	.	error
+
+
+state 135:
+
+	Type : ID .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 136:
+
+	Type : KW_unit .  (reduce by rule 8)
+
+
+
+	.	reduce by rule 8
+
+
+state 137:
+
+	Type : KW_char .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 138:
+
+	Type : KW_string .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 139:
+
+	Type : KW_real .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 140:
+
+	Type : KW_int .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 141:
+
+	ExpComma_seq1 : Exp COMMA ExpComma_seq1 .  (reduce by rule 61)
+
+
+
+	.	reduce by rule 61
+
+
+state 142:
+
+	FieldList' : COMMA ID . EQSIGN Exp FieldList' 
+
+	EQSIGN	shift 157
+
+
+	.	error
+
+
+state 143:
+
+	Exp : KW_if Exp KW_then Exp KW_else Exp .  (reduce by rule 56)
+
+
+
+	.	reduce by rule 56
+
+
+state 144:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Decl : KW_fun ID LPAREN RPAREN COLON Type . EQSIGN Exp 
+
+	KW_ref	shift 153
+	ARROW	shift 151
+	EQSIGN	shift 158
+
+
+	.	error
+
+
+state 145:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Decl : KW_fun ID LPAREN ID COLON Type . RPAREN COLON Type EQSIGN Exp 
+
+	KW_ref	shift 153
+	RPAREN	shift 159
+	ARROW	shift 151
+
+
+	.	error
+
+
+state 146:
+
+	PatList' : COMMA Pat PatList' .  (reduce by rule 83)
+
+
+
+	.	reduce by rule 83
+
+
+state 147:
+
+	PatFieldList : ID EQSIGN Pat PatFieldList' .  (reduce by rule 85)
+
+
+
+	.	reduce by rule 85
+
+
+state 148:
+
+	PatFieldList' : COMMA . ID EQSIGN Pat PatFieldList' 
+
+	ID	shift 160
+
+
+	.	error
+
+
+state 149:
+
+	PMRule : Pat DARROW Exp .  (reduce by rule 69)
+
+
+
+	.	reduce by rule 69
+
+
+state 150:
+
+	PMatch : PMRule BAR PMatch .  (reduce by rule 67)
+
+
+
+	.	reduce by rule 67
+
+
+state 151:
+
+	Type : Type ARROW . Type 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 161
+
+	.	error
+
+
+state 152:
+
+	Exp : KW_fn LPAREN ID COLON Type RPAREN . DARROW Exp 
+
+	DARROW	shift 162
+
+
+	.	error
+
+
+state 153:
+
+	Type : Type KW_ref .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 154:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Type : LPAREN Type . TIMES TypeList RPAREN 
+	Type : LPAREN Type . RPAREN 
+
+	KW_ref	shift 153
+	RPAREN	shift 164
+	TIMES	shift 163
+	ARROW	shift 151
+
+
+	.	error
+
+
+state 155:
+
+	Type : LBRACE TypeFieldList . RBRACE 
+
+	RBRACE	shift 165
+
+
+	.	error
+
+
+state 156:
+
+	TypeFieldList : ID . COLON Type TypeFieldList' 
+
+	COLON	shift 166
+
+
+	.	error
+
+
+state 157:
+
+	FieldList' : COMMA ID EQSIGN . Exp FieldList' 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 167
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 158:
+
+	Decl : KW_fun ID LPAREN RPAREN COLON Type EQSIGN . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 168
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 159:
+
+	Decl : KW_fun ID LPAREN ID COLON Type RPAREN . COLON Type EQSIGN Exp 
+
+	COLON	shift 169
+
+
+	.	error
+
+
+state 160:
+
+	PatFieldList' : COMMA ID . EQSIGN Pat PatFieldList' 
+
+	EQSIGN	shift 170
+
+
+	.	error
+
+
+state 161:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Type : Type ARROW Type .  (reduce by rule 11)
+
+	KW_ref	shift 153
+	ARROW	shift 151
+
+
+	.	reduce by rule 11
+
+
+state 162:
+
+	Exp : KW_fn LPAREN ID COLON Type RPAREN DARROW . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 171
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 163:
+
+	Type : LPAREN Type TIMES . TypeList RPAREN 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 173
+	TypeList	goto 172
+
+	.	error
+
+
+state 164:
+
+	Type : LPAREN Type RPAREN .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 165:
+
+	Type : LBRACE TypeFieldList RBRACE .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 166:
+
+	TypeFieldList : ID COLON . Type TypeFieldList' 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 174
+
+	.	error
+
+
+state 167:
+
+	FieldList' : COMMA ID EQSIGN Exp . FieldList' 
+
+	COMMA	shift 122
+
+	FieldList'	goto 175
+
+	.	reduce by rule 66
+
+
+state 168:
+
+	Decl : KW_fun ID LPAREN RPAREN COLON Type EQSIGN Exp .  (reduce by rule 72)
+
+
+
+	.	reduce by rule 72
+
+
+state 169:
+
+	Decl : KW_fun ID LPAREN ID COLON Type RPAREN COLON . Type EQSIGN Exp 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 176
+
+	.	error
+
+
+state 170:
+
+	PatFieldList' : COMMA ID EQSIGN . Pat PatFieldList' 
+
+	ID	shift 69
+	DATACON	shift 68
+	DATACONARG	shift 67
+	LBRACE	shift 66
+	INT	shift 65
+	UNDERSCORE	shift 64
+	LPAREN	shift 63
+
+	Pat	goto 177
+
+	.	error
+
+
+state 171:
+
+	Exp : KW_fn LPAREN ID COLON Type RPAREN DARROW Exp .  (reduce by rule 58)
+
+
+
+	.	reduce by rule 58
+
+
+state 172:
+
+	Type : LPAREN Type TIMES TypeList . RPAREN 
+
+	RPAREN	shift 178
+
+
+	.	error
+
+
+state 173:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	TypeList : Type . TIMES TypeList 
+	TypeList : Type .  (reduce by rule 16)
+
+	KW_ref	shift 153
+	TIMES	shift 179
+	ARROW	shift 151
+
+
+	.	reduce by rule 16
+
+
+state 174:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	TypeFieldList : ID COLON Type . TypeFieldList' 
+
+	KW_ref	shift 153
+	COMMA	shift 181
+	ARROW	shift 151
+
+	TypeFieldList'	goto 180
+
+	.	reduce by rule 19
+
+
+state 175:
+
+	FieldList' : COMMA ID EQSIGN Exp FieldList' .  (reduce by rule 65)
+
+
+
+	.	reduce by rule 65
+
+
+state 176:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	Decl : KW_fun ID LPAREN ID COLON Type RPAREN COLON Type . EQSIGN Exp 
+
+	KW_ref	shift 153
+	ARROW	shift 151
+	EQSIGN	shift 182
+
+
+	.	error
+
+
+state 177:
+
+	PatFieldList' : COMMA ID EQSIGN Pat . PatFieldList' 
+
+	COMMA	shift 148
+
+	PatFieldList'	goto 183
+
+	.	reduce by rule 87
+
+
+state 178:
+
+	Type : LPAREN Type TIMES TypeList RPAREN .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 179:
+
+	TypeList : Type TIMES . TypeList 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 173
+	TypeList	goto 184
+
+	.	error
+
+
+state 180:
+
+	TypeFieldList : ID COLON Type TypeFieldList' .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 181:
+
+	TypeFieldList' : COMMA . ID COLON Type TypeFieldList' 
+
+	ID	shift 185
+
+
+	.	error
+
+
+state 182:
+
+	Decl : KW_fun ID LPAREN ID COLON Type RPAREN COLON Type EQSIGN . Exp 
+
+	KW_fn	shift 31
+	KW_case	shift 30
+	KW_let	shift 29
+	KW_ref	shift 26
+	KW_not	shift 25
+	KW_if	shift 24
+	KW_error	shift 23
+	ID	shift 22
+	DATACON	shift 21
+	DATACONARG	shift 20
+	LBRACE	shift 19
+	INT	shift 18
+	REAL	shift 17
+	CHAR	shift 16
+	HASH	shift 15
+	LPAREN	shift 14
+	BANG	shift 13
+	STRING	shift 12
+	NEG	shift 11
+
+	Constant	goto 10
+	Binops	goto 9
+	Unops	goto 8
+	AtomicExp	goto 7
+	Exp	goto 186
+	InfixExp	goto 3
+	AtExp	goto 2
+	AtExp_seq1	goto 1
+
+	.	error
+
+
+state 183:
+
+	PatFieldList' : COMMA ID EQSIGN Pat PatFieldList' .  (reduce by rule 86)
+
+
+
+	.	reduce by rule 86
+
+
+state 184:
+
+	TypeList : Type TIMES TypeList .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 185:
+
+	TypeFieldList' : COMMA ID . COLON Type TypeFieldList' 
+
+	COLON	shift 187
+
+
+	.	error
+
+
+state 186:
+
+	Decl : KW_fun ID LPAREN ID COLON Type RPAREN COLON Type EQSIGN Exp .  (reduce by rule 71)
+
+
+
+	.	reduce by rule 71
+
+
+state 187:
+
+	TypeFieldList' : COMMA ID COLON . Type TypeFieldList' 
+
+	KW_int	shift 140
+	KW_real	shift 139
+	KW_string	shift 138
+	KW_char	shift 137
+	KW_unit	shift 136
+	ID	shift 135
+	LBRACE	shift 134
+	LPAREN	shift 133
+
+	Type	goto 188
+
+	.	error
+
+
+state 188:
+
+	Type : Type . KW_ref 
+	Type : Type . ARROW Type 
+	TypeFieldList' : COMMA ID COLON Type . TypeFieldList' 
+
+	KW_ref	shift 153
+	COMMA	shift 181
+	ARROW	shift 151
+
+	TypeFieldList'	goto 189
+
+	.	reduce by rule 19
+
+
+state 189:
+
+	TypeFieldList' : COMMA ID COLON Type TypeFieldList' .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 190:
+
+
+	EOF	accept
+
+
+	.	error
+
+221 of 1061 action table entries left after compaction
+302 goto table entries

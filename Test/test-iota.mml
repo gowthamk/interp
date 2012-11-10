@@ -1,0 +1,10 @@
+let
+fun iotaHelper(x: (int * intlist)):intlist =
+  (case x of
+     (0,l) => l
+   | (n,l) => iotaHelper(n-1,Cons(n,l)))
+
+in iotaHelper(3,Nil) 
+end
+
+
