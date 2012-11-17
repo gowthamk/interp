@@ -294,18 +294,22 @@ and
 
 
   (* Pattern matching *)
-  (* Desugars into if-else stmts *)
+  (* Desugars into 1. Function Applications and 2. if-else stmts *)
   fun pat_compile (p:A.pat) (root:A.exp) (ok:unit->A.exp)
         (fail:unit->A.exp) : A.exp =
         case p of
             A.Wild_p => ok()
             (* wild patterns alway succeed *)
-          | A.Id_p(x) => 
+          | A.Id_p(x) => (* val x = 2 *)
               A.App_e(A.Fn_e(x,A.Id_t("patType"),ok()),root)
           | A.DataCon_p(x,NONE) => 
             (* generate code to test that the root is is equal to
              * the appropriate nullary constructor *)
+             (* x_cc is unary expression that tests if its arg is
+                the constructor x *)
                let val x_cc = constr2cunop(nullary_datacon_tag x)
+             (* First test if root is nullary. Then test if that 
+                nullary cons is what we are looking for *)
 		   val term =  A.If_e(A.Unop_e(A.isNullary, root),
 				      A.If_e(A.Unop_e(x_cc, root), ok(), fail()),
 				      fail())
@@ -314,8 +318,12 @@ and
           | A.DataCon_p(x,SOME(p')) => 
                 (* generate code to test that the root is is a value-carrying tuple *)
              let val x_cc = constr2cunop(value_datacon_tag x) 
+                (* Checks if root is non-nullary constructor *)
                  val term = A.If_e( A.Unop_e(A.isValueCarry, root),
+                (* Then check if constructors actually match *)
 				   A.If_e(A.Unop_e(x_cc,root),
+                (* A.valueOf generates code to get unroll root once *)
+                (* Next p' is unrolled and corresponding vals are assigned *)
 					  pat_compile p' (A.Unop_e(A.valueOf,root)) ok fail,
 					  fail()) ,
 				   fail())
@@ -371,14 +379,14 @@ and
 
  fun patMatch(e,env) =
      (case e of
-	 A.Let_e(A.Val_d(p,e1)::d,e2) =>
-	    let 
-        val let1 = A.Let_e(d,e2)
-        val root = e1
-        val ok   = fn _ => let1
-	    in
-        eval(pat_compile p root ok ok,env)
-	    end
+       A.Let_e(A.Val_d(p,e1)::d,e2) =>
+          let 
+            val let1 = A.Let_e(d,e2)
+            val root = e1
+            val ok   = fn _ => let1
+          in
+            eval(pat_compile p root ok ok,env)
+          end
        | A.Case_e(e,cases) => let val eid = gensym()
 				  val compiledPat = A.App_e(A.Fn_e(eid,A.Id_t("pat"),comp_cases eid cases),e)
 			      in eval(compiledPat,env)
@@ -441,8 +449,8 @@ and eval(e,env) =
           val DataCon_v(guard,_) = eval(e1,env) 
         in
           case guard of
-          True_v => eval(e1,env)
-          | False_v => eval(e2,env)
+          True_v => eval(e2,env)
+          | False_v => eval(e3,env)
           | _ => Error.runtime("If statement guard should be a bool value")
         end
       | A.Record_e(fields) => Record_v(List.map (fn(id,e) => (id,eval(e,env))) fields)
@@ -457,12 +465,12 @@ and eval(e,env) =
       | A.DataCon_e (id,c) => 
 	   (case c of
 	       NONE => Error.runtime("Constructor cannot be reduced")
-	     | SOME e => let val v = eval(e,env)
+	     | SOME e => Error.runtime("1")(*let val v = eval(e,env)
 			 in (case id of
 				"SOME" => DataCon_v(Some_v,SOME(v))
 			      | "Cons" => DataCon_v(Cons_v,SOME(v))
 			      | _ => Error.runtime("Constructor mismatch"))
-			 end)
+			 end*))
       | A.Case_e(test,ps) => patMatch(e,env)
       | A.Let_e([],e) => eval(e,env)
       | A.Let_e(A.Val_d(p,e1)::d,e2) => patMatch(e,env)
